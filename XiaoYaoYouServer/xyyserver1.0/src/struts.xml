@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" 
+"http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+    <constant name="struts.i18n.encoding" value="UTF-8"></constant>
+    <constant name="struts.objectFactory" value="struts"></constant>
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+
+	<include file="struts-default.xml"/>
+	
+	<package name="admin" namespace="/" extends="json-default">
+		<!--
+		<interceptors>
+	        <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+	    </interceptors>
+	    -->
+	    
+	    <!-- 浏览器登录 -->
+		<action name="login" class="controller.admin.LoginAction" method="login">
+			<result type="json" name="success">
+				 <param name="root">loginResp</param>
+			</result>
+		</action>
+		
+		<!-- 浏览器定期刷新处理，返回景点客流人数列表-->
+		<action name="refresh_touristnum" class="controller.admin.RefreshSpotTouristNumAction" method="refresh">
+			<result type="json" name="success">
+				<param name = "excludeNullProperties">true</param>
+				<param name = "excludeProperties">success, totalProperty</param>
+			</result>
+		</action>
+		
+		<!-- 浏览器定期刷新处理，返回报警信息列表 -->
+		<action name="refresh_touristnum2" class="controller.admin.CheckNewCallAction" method="check_call">
+			<result type="json" name="success">
+				<param name = "excludeNullProperties">true</param>
+				<param name = "excludeProperties">
+				    alarm_msgs\[\d+\]\.route, alarm_msgs\[\d+\]\.province, alarm_msgs\[\d+\]\.sex,
+				    alarm_msgs\[\d+\]\.route_point_num, alarm_msgs\[\d+\]\.success</param>
+			</result>
+		</action>
+		
+		<!-- 浏览器搜救查询 -->
+		<action name="Search_traceroute" class="controller.admin.TraceRouteAction" method="trace_route">
+			<result type="json" name="success">
+			    <param name = "root">touristRouteData</param>
+				<param name = "excludeNullProperties">true</param>
+			</result>
+		</action>
+
+		<!-- 浏览器搜救查询 -->
+		<action name="Search_traceroute2" class="controller.admin.TraceRouteAction" method="trace_route">
+
+			<result type="json" name="success">
+			    <param name = "root">touristRouteData</param>
+			    <param name = "excludeNullProperties">true</param>
+			    <param name = "includeProperties">route\.*, route\[\d+\]\.spot_id, 
+			        			route\[\d+\]\.spot_name, route\[\d+\]\.time</param>
+			</result>
+		</action>
+				
+		<!-- 浏览器发送预警 -->
+		<action name="send_warning" class="controller.admin.SendWarningAction" method="send_warning">
+			<interceptor-ref name="createSession"/>
+			<interceptor-ref name="defaultStack"/> 
+			<result type="plainText" name="success">
+	            <param name="charSet">UTF-8</param> 
+			</result>
+		</action>
+		
+		<!-- 浏览器用户反馈 -->
+		<action name="load_feedbacks" class="controller.admin.FeedbackAction" method="load_feedbacks">
+
+			<result type="json" name="success">
+			    <param name = "includeProperties">feedbacks\[\d+\]\.username, 
+			        feedbacks\[\d+\]\.comment, feedbacks\[\d+\]\.time</param>
+			    <param name = "excludeNullProperties">true</param>
+			</result>
+		</action>
+	</package>
+    
+	<!-- 另外struts配置文件 -->
+	<!-- 游客手机Android版 -->
+	<include file="controller/tourist/android/tourandroid-control.xml"/>
+	
+</struts>

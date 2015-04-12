@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" 
+"http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="android_spots" namespace="/" extends="json-default">
+	    <!-- 景点详细介绍 -->
+		<action name="spot_info" class="controller.tourist.android.SpotInfoAction" method="loadspotinfo">
+			<result type="json" name="success_spot">
+				 <param name="includeProperties">spot_name, grade_level, context,
+				      comments\[\d+\]\.content, comments\[\d+\]\.nickname, comments\[\d+\]\.time,
+				      pics\[\d+\]\.path, pics\[\d+\]\.name</param>
+			</result>
+			<result type="json" name="failed">
+				 <param name="root">successMsg</param>
+			</result>
+			<result type="json" name="success_resthotel">
+				 <param name="includeProperties">spot_name, grade_level, context,
+				      comments\[\d+\]\.content, comments\[\d+\]\.nickname, comments\[\d+\]\.time,
+				      pics\[\d+\]\.path, pics\[\d+\]\.name,
+				      products\[\d+\]\.description, products\[\d+\]\.price</param>
+			</result>
+			
+		</action>
+		
+		<!-- 景点详细介绍 之下载图片-->		
+		<!-- 文件上传下载参考资料
+			http://xiaoxuetu.blog.51cto.com/4915629/900704
+			http://wenku.baidu.com/view/f0518ca4284ac850ad02429e.html
+			http://helloworlda.iteye.com/blog/1148855
+			 -->
+		<action name="get_pics" class="controller.tourist.android.SpotInfoAction" method="download_spotpics">
+            <!-- 指定被下载内容的位置 --> 
+            <param name="inputPath">/upload/123.jpg</param> 
+            <result name="success" type="stream"> 
+                <!-- 制定下载文件的文件类型 --> 
+                <param name="contentType">image/jpg</param> 
+                <!-- 指定由getTargetFile（）方法返回被下载文件的InputStream  --> 
+                <param name="inputName">targetFile</param> 
+                <param name="contentDisposition">attachment;filename="123.jpg"</param> 
+                <!-- 指定下载文件的缓冲大小 --> 
+                <param name="bufferSize">4096</param> 
+            </result> 
+		</action>
+		
+		<!-- 景点详细介绍 之下载视频-->
+		<action name="get_video" class="controller.tourist.android.VideoAction" method="download_spotvideo">
+             	<!-- 指定被下载内容的位置 -->
+           <!--  <param name="inputPath">/upload/123.jpg</param>
+             
+            <result name="success" type="stream"> 
+                下载文件类型定义
+                <param name="contentType">application/octet-stream</param>
+                下载文件输出流定义 
+                <param name="inputName">inputStream</param>
+                指定下载文件的缓冲大小 
+                <param name="bufferSize">4096</param> 
+            </result> -->
+            <interceptor-ref name="createSession"/>
+			<interceptor-ref name="defaultStack"/> 
+			<result type="plainText" name="success">
+	            <param name="charSet">UTF-8</param> 
+			</result>
+            
+		</action>
+		
+		<!-- 景点详细介绍 之下载音频-->			
+		<action name="get_voice" class="controller.tourist.android.SpotInfoAction" method="download_spotvoice">
+            <result name="success" type="stream"> 
+                <!-- 下载文件类型定义 -->
+                <param name="contentType">application/octet-stream</param>
+                <!-- 下载文件输出流定义 -->
+                <param name="inputName">inputStream</param>
+                <!-- 指定下载文件的缓冲大小 --> 
+                <param name="bufferSize">4096</param>
+            </result> 
+		</action>		
+	</package>
+	
+	<package name="android_friends"  namespace="/" extends="json-default">
+	    <!-- 好友列表 -->
+	    <action name="friendlist" class="controller.tourist.android.FriendListAction" method="show_friends">
+			<result type="json" name="success">
+				 <param name="root">friendList</param>
+				 <param name="excludeNullProperties">true</param>
+			</result>
+		</action>
+	</package>
+	
+	<package name="passed_route" namespace="/" extends="json-default">
+	    <!-- 已走路线 -->
+	    <action name="tourist_route" class="controller.tourist.android.PassedRoadAction" method="load_route">
+			<!-- 方法一返回 {"routePointList":[
+											{"lat":34.4867254048702,"lng":110.083717972889},
+										  	{"lat":34.4860886832231,"lng":110.083288819447}
+										  ]
+			-->
+			<result type="json" name="success">
+				 <!-- <param name="root">routePointList</param>-->
+				 <param name="includeProperties">routePointList\[\d+\]\.lat, routePointList\[\d+\]\.lng</param>
+				 <param name="excludeNullProperties">true</param>
+			</result>
+			
+		</action>
+	</package>
+	
+    <package name="density"  namespace="/" extends="json-default">
+	    <!-- 游客密度 -->
+	    <action name="density" class="controller.tourist.android.DensityAction" method="load_density">
+			<result type="json" name="success">
+				 <!-- <param name="root">touristsPoints</param>-->
+				 <param name="includeProperties">touristsPoints\[\d+\]\.lat, touristsPoints\[\d+\]\.lng</param>
+				 <param name="excludeNullProperties">true</param>
+			</result>
+		</action>
+	</package>
+	
+    <package name="route_calculate"  namespace="/" extends="json-default">
+	    <!-- 路线计算 -->
+	    <action name="calculate_route" class="controller.tourist.android.RouteCalculateAction" method="load_route">
+			<result type="json" name="success">
+				 <param name="excludeNullProperties">true</param>
+				 <param name="includeProperties">toast, routePointList\[\d+\]\.lat, routePointList\[\d+\]\.lng</param>
+			</result>
+		</action>
+	</package>
+</struts>
