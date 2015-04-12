@@ -1,0 +1,43 @@
+.*{
+    margin£º0£»
+    padding£º0£»
+}
+
+.img{
+
+	float:left;
+	margin-left:2%;
+	
+}
+
+/*
+.map_canvas
+{
+	float:left;
+	margin-left:2%;
+}
+*/
+
+
+.footer
+{
+	position:absolute;
+	bottom:0px;
+	display:block;
+	float:left;
+	margin-left:40%;
+	font: 1.5em Georgia, "Times New Roman", Times, serif;
+}
+
+.timeCss
+{
+	float: right;
+	margin-right:1%;
+}
+
+.buttonCss
+{
+	float: right;
+	margin-bottom: 1%;
+
+}

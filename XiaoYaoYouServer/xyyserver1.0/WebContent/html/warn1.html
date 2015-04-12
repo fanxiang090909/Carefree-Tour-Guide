@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>管理员首页</title>
+<link rel="stylesheet" type="text/css" href="../css/login1.css" />
+<link rel="stylesheet" type="text/css"
+	href="../extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="../extjs/bootstrap.js"></script>
+<script type="text/javascript" src="../extjs/ext-all.js"></script>
+<script type="text/javascript"
+	src="https://maps.google.com/maps/api/js?sensor=false&language=zh"></script>
+
+<script type="text/javascript">
+<!--
+	var map;
+	var markersArray = [];
+	/* 
+	    latitude 纬度  
+	    longitude 精度  
+	    title 悬浮在标记图标上显示的内容 
+	    openInfo 提示窗口内容(InfoWindow) 
+	 */
+	function initialize() {
+
+		var myLatlng = new google.maps.LatLng(34.502237241234 , 110.084917545318);
+		
+		var imageBounds = new google.maps.LatLngBounds(
+			new google.maps.LatLng(34.4740853423463,110.063824653625),
+			new google.maps.LatLng(34.5303891401208,110.106010437011));
+		
+		var myOptions = {
+				zoom : 14, 
+				center : myLatlng, 
+				mapTypeId : google.maps.MapTypeId.ROADMAP
+		};
+
+			 
+		map = new google.maps.Map(document.getElementById("map_canvas"),
+					myOptions);
+
+		
+			
+		var oldmap = new google.maps.GroundOverlay(	
+			"http://10.128.51.12:8080/xyyserver1.0/images/huashan649x1023.png",
+			imageBounds);
+		oldmap.setMap(map);
+		
+		
+		
+		/*
+		var flightPlanCoordinates1 = [
+				new google.maps.LatLng(34.523401862237, 110.077192783355),
+				new google.maps.LatLng(34.5206129747548, 110.077257156372),
+				new google.maps.LatLng(34.5127629264995, 110.074725151062),
+				new google.maps.LatLng(34.504823724647, 110.0755995512),
+				new google.maps.LatLng(34.5046115307018, 110.075433254241),
+				new google.maps.LatLng(34.4963267031972, 110.075293779373),
+				new google.maps.LatLng(34.4915428793187, 110.075862407684),
+				new google.maps.LatLng(34.4905701643643, 110.076956748962),
+				new google.maps.LatLng(34.4952037229827, 110.078372955322),
+				new google.maps.LatLng(34.4973258776015, 110.079789161682),
+				new google.maps.LatLng(34.4982100927509, 110.082535743713),
+				new google.maps.LatLng(34.4967953440106, 110.083909034729),
+				new google.maps.LatLng(34.4946378059621, 110.083651542663),
+				new google.maps.LatLng(34.4900042158972, 110.082535743713),
+				new google.maps.LatLng(34.4876342649767, 110.083694458007),
+				new google.maps.LatLng(34.4854057422299, 110.083544254302),
+				new google.maps.LatLng(34.4839377145577, 110.083029270172),
+				new google.maps.LatLng(34.4824188093355, 110.083171427249)
+		
+		];
+		var flightPlanCoordinates2 = [
+				new google.maps.LatLng(34.483247695817845, 110.08241173709872),
+				new google.maps.LatLng(34.48270822891242, 110.08275505985263),
+				new google.maps.LatLng(34.48212453947878, 110.08343097652438)
+		
+		];
+		var flightPlanCoordinates3 = [
+		        new google.maps.LatLng(34.483247695817845, 110.08241173709872),
+		        new google.maps.LatLng(34.48270822891242, 110.08275505985263),
+		        new google.maps.LatLng(34.48212453947878, 110.08343097652438),
+		        new google.maps.LatLng(34.48300007209844, 110.08438584293368),
+		        new google.maps.LatLng(34.48419396540649, 110.08565184558871),
+		        new google.maps.LatLng(34.485343624293925, 110.08549091304782),
+		        new google.maps.LatLng(34.485891917567486, 110.08701440776828)
+		              		
+		];
+		
+		var flightPlanCoordinates4 = [
+		        new google.maps.LatLng(34.483247695817845, 110.08241173709872),
+		        new google.maps.LatLng(34.48270822891242, 110.08275505985263),
+		        new google.maps.LatLng(34.48212453947878, 110.08343097652438),
+		        new google.maps.LatLng(34.48300007209844, 110.08438584293368),
+		        new google.maps.LatLng(34.48419396540649, 110.085651845588),
+		        new google.maps.LatLng(34.4830697163243, 110.088586182251),
+		        new google.maps.LatLng(34.4812125165434, 110.088736385955),
+		        new google.maps.LatLng(34.4798859199574, 110.086955399169),
+		        new google.maps.LatLng(34.4790545753453, 110.085517735137),
+		        new google.maps.LatLng(34.4779225182977, 110.083286137237),
+		        new google.maps.LatLng(34.4771442201674, 110.082213253631),
+		        new google.maps.LatLng(34.4768788896001, 110.081869930877),
+		        new google.maps.LatLng(34.4768006095297, 110.080186128616),
+		        new google.maps.LatLng(34.4765428030038, 110.081548065795),
+		        new google.maps.LatLng(34.4764543589378, 110.082384915008)
+		              		              		
+		];
+		var flightPlanCoordinates5 = [
+		        new google.maps.LatLng(34.4829914420635, 110.082192420959),
+		        new google.maps.LatLng(34.4823370043397, 110.081226825714),
+		        new google.maps.LatLng(34.4815410596484, 110.079510211944),
+		        new google.maps.LatLng(34.4827261300926, 110.077707767486),
+		        new google.maps.LatLng(34.4840349943007, 110.077536106109),
+		        new google.maps.LatLng(34.4845832961763, 110.075647830963),
+		        new google.maps.LatLng(34.4841941790877, 110.074682235717),
+		        new google.maps.LatLng(34.4829295360118, 110.07309436798)
+		              		              		
+		];
+		
+		var flightPath1 = new google.maps.Polyline({
+			path : flightPlanCoordinates1,
+			strokeColor : "#FF0000",
+			strokeOpacity : 1.0,
+			strokeWeight : 2
+		});
+
+		var flightPath2 = new google.maps.Polyline({
+			path : flightPlanCoordinates2,
+			strokeColor : "#FF0000",
+			strokeOpacity : 1.0,
+			strokeWeight : 2
+		});
+
+		var flightPath3 = new google.maps.Polyline({
+			path : flightPlanCoordinates3,
+			strokeColor : "#FF0000",
+			strokeOpacity : 1.0,
+			strokeWeight : 2
+		});
+		
+		var flightPath4 = new google.maps.Polyline({
+			path : flightPlanCoordinates4,
+			strokeColor : "#FF0000",
+			strokeOpacity : 1.0,
+			strokeWeight : 2
+		});
+		
+		var flightPath5 = new google.maps.Polyline({
+			path : flightPlanCoordinates5,
+			strokeColor : "#FF0000",
+			strokeOpacity : 1.0,
+			strokeWeight : 2
+		});
+		flightPath1.setMap(map);
+		flightPath2.setMap(map);
+		flightPath3.setMap(map);
+		flightPath4.setMap(map);
+		flightPath5.setMap(map);
+		*/
+		
+	}
+//-->
+</script>
+
+
+</head>
+<body onload="initialize()"
+	style="background-color: rgb(193, 213, 249);">
+
+	<img src="../images/top_show.png" style="height: 70px; margin-left: 4%;" />
+	<div style="width: 1100px; margin-left: 5%; margin-top: 2%;">
+		<div id="map_canvas" style="width: 550px; height: 695px; float: left;"></div>
+
+		<div class="panel" style="width: 550px; float: left;">
+			<script type="text/javascript" src="../js/warn1.js"></script>
+		</div>
+	</div>
+	<!--  
+	<div class="footer">
+		<a href=http://www.nwpuxiangxinli.com>联系我们</a> |Power by 向心力 Copyright
+		2009
+	</div>
+	-->
+
+</body>
+
+</html>
